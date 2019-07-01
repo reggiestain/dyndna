@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.cello.phonegap" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>cello</name>
+    <description>
+        Hello World sample application that responds to the deviceready event.
+    </description>
+    <content src="index.html" />
+    <plugin name="cordova-plugin-camera" spec="~2.0.0" />
+    <plugin name="cordova-plugin-dialogs" spec="~1.3.0" />
+    <plugin name="cordova-plugin-spinner" spec="~1.1.0" />
+    <plugin name="cordova-plugin-screen-orientation" spec="~1.4.2" />
+    <access origin="*" />
+    <allow-intent href="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <icon density="hdpi" src="res/android/hdpi.png" />
+        <preference name="Fullscreen" value="false" />
+        <preference name="webviewbounce" value="false" />
+        <preference name="DisallowOverscroll" value="true" />
+        <preference name="Orientation" value="portrait" />
+        <preference name="android-minSdkVersion" value="22" />
+        <preference name="android-targetSdkVersion" value="28" />
+        <preference name="AndroidPersistentFileLocation" value="Internal" />
+        <preference name="permissions" value="none" />  
+        <preference name="StatusBarStyle" value="lightcontent" />      
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
+    <plugin name="cordova-plugin-android-fingerprint-auth" spec="^1.5.0" />
+    <plugin name="cordova-plugin-deviceinformation" spec="^2.0.2" />
+    <plugin name="cordova-plugin-permission" spec="^0.1.0" />
+    <plugin name="cordova-plugin-sim" spec="^1.3.3" />
+    <plugin name="cordova-plugin-android-permissions" spec="^1.0.0" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
+    <plugin name="cordova-pdf-generator" spec="^2.0.4" />
+</widget>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+        <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+        <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+        <!-- Good default declaration:
+        * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+        * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+        * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+            * Enable inline JS: add 'unsafe-inline' to default-src
+            * Enable eval(): add 'unsafe-eval' to default-src
+        * Create your own at http://cspisawesome.com
+        -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+
+        <title></title>
+    </head>
+
+    <body>
+        <div id="app-init">
+            <div class="app flex-center">
+                <!-- <div class="app-vers">Version 1.0</div>-->
+                <br><br><br><br>
+                <div class="app-logo">
+                    <img src="img/logo.png" alt="logo" />
+                </div>
+                <div class="app-message">
+                    <h1 class="app-title">Prop Solution</h1>
+                    <p class="app-sub-title">Property Management Made Easy</p>
+                </div>            
+                <div class="app-home-buttons">
+                    <button id="login" class="button button-1">Sign In</button>
+                    <h3 id="signin" style="color:#000">Or use your App PIN <span class="fa fa-arrow-right"></span></h3><br>
+                    <p>By signing in, i agree to the T&Cs</p><br>
+                    <button id="register" class="button button-1">Create Account</button>                
+                </div>
+                <div class="app-alert-footer">
+
+                </div>
+            </div>
+        </div>    
+        <!--<div class="not-app flex-center bg-info">
+            <div class="not-app-message">
+                <h1 class="app-title">Not the app image</h1>
+            </div>
+        </div>-->
+        <script type="text/javascript" src="js/jquery3.4.1.min.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            //app.initialize();
+            $(document).ready(function () {
+                //Input focus
+                $(document).on("focus", "input, textarea", function () {
+                    $(this).css('border-bottom', '2px solid #fff');
+                    $(".app-logo").hide();
+                });
+                //Input focus out
+                $(document).on("focusout", "input, textarea", function () {
+                    $(this).css('border-bottom', '2px solid #000');
+                    $(".app-logo").show();
+                });
+                $(document).on("click", "#login", function () {
+                    offline();
+                    scan();
+                });
+                //PIN sign in
+                $(document).on("click", "#signin", function () {
+                    offline();
+                    $("#app-init").load("screens/login.html").slideDown(300, 'linear');
+                });
+                //Create account
+                $(document).on("click", "#reg", function () {
+                $("#app-init").load("screens/dashboard.html").slideDown(300, 'linear');
+                });
+                //$(document).on('deviceready', function (e) {
+                document.addEventListener("deviceready", function () {                    
+                    offline();
+                }, false);
+                $(document).on("click", "[data-toggle]", function () {
+                    var toggle_el = $(this).data("toggle");
+                    $(toggle_el).toggleClass("open-sidebar");
+                });
+                //Back to home screen
+                $(document).on("click", "#cd-menu-click", function () {
+                    home_screen();
+                });
+                //Refresh
+                $(document).on('click', '.refresh', function () {
+                    refresh();
+                });
+                //Register screen
+                $(document).on('click', '#register', function () {
+                    reg_screen();
+                });
+                //Check internet connection status
+                function offline() {
+                    document.addEventListener("offline", function (e) {
+                        //alert("NO_NETWORK");
+                        window.setTimeout(function () {
+                          return  window.location.href = 'index.html';
+                        }, 5000);
+                        $(".app-alert-footer").show();
+                        $(".app-alert-footer").html("<br><h2>Oops, something went wrong.</h2>\n\
+                      <p>A server error has occurred. <br>Please try again later.");
+                    });
+                    document.addEventListener("online", function (e) {
+                        $(".app-alert-footer").hide();
+                    });
+                }
+
+                //Alert popup message
+                function alertpop() {
+                    var message = "There's no internet connection. Please try again.";
+                    var title = "Warning!";
+                    var buttonName = "RETRY";
+                    navigator.notification.alert(message, alertCallback, title, buttonName);
+                    function alertCallback() {
+                        restartApplication();
+                        location.reload();
+                    }
+                }
+                //Reload Screen
+                function refresh() {
+                    location.reload();
+                }
+                //Show Register Screen
+                function reg_screen() {
+                    $("#app-init").load("screens/register.html").slideDown(300, 'linear');
+                }
+                //Show Home Screen
+                function home_screen() {
+                    $("#app-init").load("screens/home.html").slideDown(300, 'linear');
+                }
+
+                function scan() {
+                  //$("#app-init").load("screens/dashboard.html").slideDown(300, 'linear');
+                  //return;
+                  offline();
+                  FingerprintAuth.isAvailable(function (result) {
+                        //alert("FingerprintAuth available: " + JSON.stringify(result));
+                        // If has fingerprint device and has fingerprints registered
+                        if (result.isAvailable == true && result.hasEnrolledFingerprints == true) {
+
+                            // Check the docs to know more about the encryptConfig object :)
+                            var encryptConfig = {
+                                clientId: "myAppName",
+                                username: "currentUser",
+                                password: "currentUserPassword",
+                                maxAttempts: 5,
+                                locale: "en_US",
+                                dialogTitle: "Prop Soution",
+                                dialogMessage: "Use your fingerprint to continue",
+                                dialogHint: "Put finger on sensor"
+                            }; // See config object for required parameters
+
+                            // Set config and success callback
+                            FingerprintAuth.encrypt(encryptConfig, function (_fingerResult) {
+                                console.log("successCallback(): " + JSON.stringify(_fingerResult));
+                                if (_fingerResult.withFingerprint) {
+                                    //alert("Successfully encrypted credentials.");
+                                    //alert("Encrypted credentials: " + result.token);
+                                    offline();
+                                    $("#app-init").load("screens/dashboard.html").slideDown(300, 'linear');
+                                } else if (_fingerResult.withBackup) {
+                                    console.log("Authenticated with backup password");
+                                }
+                                // Error callback
+                            }, function (err) {
+                                if (err === "Cancelled") {
+                                    offline();
+                                    home_screen();
+                                } else {
+                                    offline();
+                                    home_screen();
+                                }
+                            });
+                        }
+                    }, function (message) {
+                        console.log("isAvailableError(): " + message);
+                    });
+
+                }
+
+            });
+        </script>
+    </body>
+
+</html>
